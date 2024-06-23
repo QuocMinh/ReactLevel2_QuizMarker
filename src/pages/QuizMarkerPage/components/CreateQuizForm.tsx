@@ -1,15 +1,19 @@
+import { fetchCategories } from "@api/fetchCategories";
+import { fetchQuestions } from "@api/fetchQuestions";
 import { PageHeader } from "@components/PageHeader";
 import { SelectControl, SelectOption } from "@components/SelectControl";
-import { API_URL } from "@constants/url-settings";
-import { DIFFICULTY_OPTIONS, EMPTY_STRING } from "@constants/variables";
-import { Category } from "@models/CategoryModel";
+import { DIFFICULTY_OPTIONS, EMPTY_STRING, ZERO } from "@constants/variables";
+import { saveQuestions } from "@store/slices/quizSlice";
 import { loadingScreen } from "@utils/redux.utils";
 import { FC, Fragment, memo, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Button } from "reactstrap";
 import { FormField } from "../models";
 
 export const CreateQuizForm: FC = memo(() => {
+  const dispatch = useDispatch();
+
   const [categoryOptions, setCategoryOptions] = useState<SelectOption[]>([]);
 
   const form = useForm({
@@ -24,32 +28,36 @@ export const CreateQuizForm: FC = memo(() => {
   useEffect(() => {
     const getCategories = async () => {
       loadingScreen.show();
-      const respData = await fetch(API_URL.GET_CATEGORIES)
-        .then((response) => response.json())
-        .then((data) => data.trivia_categories as Category[])
-        .catch((error) => {
-          console.log("@getCategories ~ error", error);
-          return null;
-        });
+      const categories = await fetchCategories();
       loadingScreen.hide();
 
-      if (!respData) {
+      if (!categories) {
         return;
       }
 
       setCategoryOptions(
-        respData.map((data) => ({ value: data.id, label: data.name }))
+        categories.map((data) => ({ value: data.id, label: data.name }))
       );
     };
 
     getCategories();
   }, []);
 
-  const handleCreate = useCallback(() => {
+  const handleCreate = useCallback(async () => {
     const formValues = getValues();
-    console.log("@handleCreate ~ formValues", formValues);
-    // TODO: Handle create quiz here
-  }, [getValues]);
+    loadingScreen.show();
+
+    const questions = await fetchQuestions(
+      formValues[FormField.CategorySelect],
+      formValues[FormField.DifficultySelect]
+    );
+
+    if (questions.length > ZERO) {
+      dispatch(saveQuestions(questions));
+    }
+
+    loadingScreen.hide();
+  }, [dispatch, getValues]);
 
   return (
     <Fragment>
