@@ -28,6 +28,7 @@ const quizSlice = createSlice({
   reducers: {
     saveQuestions: (state, action: PayloadAction<Question[]>) => {
       state.questions = action.payload;
+      state.userAnswers = initialState.userAnswers;
     },
     updateUserAnswer: ({ userAnswers }, action: PayloadAction<UserAnswer>) => {
       userAnswers[action.payload.questionId] = action.payload;

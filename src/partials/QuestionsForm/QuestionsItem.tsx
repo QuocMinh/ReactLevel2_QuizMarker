@@ -13,8 +13,6 @@ type QuestionsItemProps = {
 
 export const QuestionsItem: FC<QuestionsItemProps> = memo(
   ({ mode, data, onSelect }) => {
-    console.count("#render QuestionsItem");
-
     const userAnswer = useSelector(quizSelector.userAnswer(data.id));
 
     const formatText = useCallback((text: string) => {

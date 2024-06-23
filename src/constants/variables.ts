@@ -29,4 +29,7 @@ export enum ColorTypes {
   Success = "success",
   Danger = "danger",
   Secondary = "secondary",
+  Info = "info",
+  Light = "light",
+  Dark = "dark",
 }

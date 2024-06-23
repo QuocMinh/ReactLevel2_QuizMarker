@@ -10,7 +10,6 @@ import { CreateQuizForm } from "./components";
 import { ColorTypes } from "@constants/variables";
 
 export const QuizMarkerPage: FC = memo(() => {
-  console.count("#render QuizMarkerPage");
   const navigate = useNavigate();
 
   const isFinishQuiz: boolean = useSelector(quizSelector.isFinishQuiz);

@@ -5,7 +5,6 @@ import {
   ColorTypes,
   DIFFICULTY_OPTIONS,
   EMPTY_STRING,
-  ZERO,
 } from "@constants/variables";
 import { saveQuestions } from "@store/slices/quizSlice";
 import { loadingScreen } from "@utils/redux.utils";
@@ -56,9 +55,7 @@ export const CreateQuizForm: FC = memo(() => {
       formValues[FormField.DifficultySelect]
     );
 
-    if (questions.length > ZERO) {
-      dispatch(saveQuestions(questions));
-    }
+    dispatch(saveQuestions(questions));
 
     loadingScreen.hide();
   }, [dispatch, getValues]);

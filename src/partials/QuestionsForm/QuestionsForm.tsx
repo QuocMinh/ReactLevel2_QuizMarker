@@ -9,8 +9,6 @@ type QuestionsFormProps = {
 };
 
 export const QuestionsForm: FC<QuestionsFormProps> = memo(({ mode }) => {
-  console.count("#render QuestionsForm");
-
   const dispatch = useDispatch();
   const questions = useSelector(quizSelector.questions);
 

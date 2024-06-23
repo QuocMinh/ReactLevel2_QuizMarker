@@ -1,46 +1,61 @@
 import { PageHeader } from "@components/PageHeader";
-import { ColorTypes, FIVE, ONE, THREE } from "@constants/variables";
+import { ROUTES } from "@constants/route-settings";
+import { ColorTypes, FIVE, ONE, THREE, ZERO } from "@constants/variables";
 import { QuestionsForm } from "@partials/index";
 import { quizSelector, resetQuiz } from "@store/slices/quizSlice";
-import { FC, Fragment, memo, useCallback, useMemo } from "react";
+import { MessageAreaType, messageArea } from "@utils/redux.utils";
+import { FC, Fragment, memo, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
-import { QuizScoreContainer } from "./styles";
 
 export const QuizResultPage: FC = memo(() => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const finalScore = useSelector(quizSelector.finalScore);
 
+  const gotoQuizForm = useCallback(() => {
+    navigate(ROUTES.ROOT_PAGE);
+  }, [navigate]);
+
   const handleClickCreate = useCallback(() => {
     dispatch(resetQuiz());
-    navigate(-ONE); // Go back to Create quiz form
-  }, [dispatch, navigate]);
+    gotoQuizForm();
+  }, [dispatch, gotoQuizForm]);
 
-  const scoreColor = useMemo(() => {
+  const finalScoreType: MessageAreaType = useMemo(() => {
     if (finalScore.numOfCorrect <= ONE) {
-      return "red";
+      return "error";
     } else if (finalScore.numOfCorrect <= THREE) {
-      return "yellow";
+      return "warning";
     } else if (finalScore.numOfCorrect <= FIVE) {
-      return "green";
+      return "success";
     } else {
-      return "white";
+      return "default";
     }
   }, [finalScore]);
+
+  useEffect(() => {
+    if (finalScore.total === ZERO) {
+      gotoQuizForm();
+      return;
+    }
+
+    // Show final score
+    messageArea[finalScoreType](
+      `You scored ${finalScore.numOfCorrect} out of ${finalScore.total}`
+    );
+
+    return () => {
+      messageArea.clear();
+    };
+  }, [finalScore.numOfCorrect, finalScore.total, finalScoreType, gotoQuizForm]);
 
   return (
     <Fragment>
       <PageHeader title="QUIZ RESULT" />
 
       <QuestionsForm mode="view" />
-
-      <QuizScoreContainer className="mt-4" $color={scoreColor}>
-        <span className="p-2">
-          You scored {finalScore.numOfCorrect} out of {finalScore.total}
-        </span>
-      </QuizScoreContainer>
 
       <Button
         color={ColorTypes.Secondary}

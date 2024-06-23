@@ -1,12 +1,15 @@
 import { API_URL } from "@constants/url-settings";
 import { EMPTY_ARRAY, EMPTY_STRING, ONE, ZERO } from "@constants/variables";
 import { Question } from "@models/QuestionModel";
+import { messageArea } from "@utils/redux.utils";
 import { shuffle } from "lodash";
 
 const AMOUNT_DEFAULT = "5";
 const TYPE_DEFAULT = "multiple";
 
 export const fetchQuestions = async (category: string, difficulty: string) => {
+  messageArea.clear();
+
   const respData = await fetch(
     API_URL.GET_QUESTIONS.replace("[amount]", AMOUNT_DEFAULT)
       .replace("[type]", TYPE_DEFAULT)
@@ -16,7 +19,9 @@ export const fetchQuestions = async (category: string, difficulty: string) => {
     .then((response) => response.json())
     .then((data) => {
       if (data.response_code !== ZERO) {
-        // TODO: show message error
+        messageArea.warning(
+          "Request too fast, please try again after 5 seconds"
+        );
         return EMPTY_ARRAY;
       }
       const shuffleQuestions = shuffle(data.results);
@@ -31,7 +36,9 @@ export const fetchQuestions = async (category: string, difficulty: string) => {
       return shuffleQuestions as Question[];
     })
     .catch((error) => {
-      console.log("@fetchQuestions ~ error", error);
+      messageArea.warning(
+        "An error occur: " + (error.message ?? "Undefined error")
+      );
       return EMPTY_ARRAY;
     });
 
