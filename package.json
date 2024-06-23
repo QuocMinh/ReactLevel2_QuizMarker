@@ -1,7 +1,7 @@
 {
   "name": "quiz_marker_react_level2",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "homepage": "https://QuocMinh.github.io/ReactLevel2_QuizMarker",
   "type": "module",
   "scripts": {

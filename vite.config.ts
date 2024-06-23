@@ -4,7 +4,7 @@ import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/ReactLevel2_QuizMarker",
+  base: "/ReactLevel2_QuizMarker/",
   plugins: [react()],
   resolve: {
     alias: [
