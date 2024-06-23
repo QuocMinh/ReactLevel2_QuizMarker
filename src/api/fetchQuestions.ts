@@ -1,6 +1,6 @@
 import { API_URL } from "@constants/url-settings";
 import { EMPTY_ARRAY, EMPTY_STRING, ONE, ZERO } from "@constants/variables";
-import { Question } from "@models/QuestionModel";
+import { QuestionModel } from "@models/QuestionModel";
 import { messageArea } from "@utils/redux.utils";
 import { shuffle } from "lodash";
 
@@ -33,7 +33,7 @@ export const fetchQuestions = async (category: string, difficulty: string) => {
           ...question.incorrect_answers,
         ]);
       });
-      return shuffleQuestions as Question[];
+      return shuffleQuestions as QuestionModel[];
     })
     .catch((error) => {
       messageArea.warning(

@@ -1,12 +1,12 @@
 import { ColorTypes } from "@constants/variables";
-import { Question } from "@models/QuestionModel";
+import { QuestionModel } from "@models/QuestionModel";
 import { quizSelector } from "@store/slices/quizSlice";
 import { FC, memo, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { Button } from "reactstrap";
 
 type QuestionsItemProps = {
-  data: Question;
+  data: QuestionModel;
   mode: "create" | "view";
   onSelect?: (questionId: number, userAnswer: string) => void;
 };

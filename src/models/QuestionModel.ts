@@ -1,4 +1,4 @@
-export type Question = {
+export type QuestionModel = {
   id: number;
   type: string;
   difficulty: string;

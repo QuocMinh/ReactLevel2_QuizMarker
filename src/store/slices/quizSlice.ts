@@ -1,5 +1,5 @@
 import { EMPTY_STRING, ZERO } from "@constants/variables";
-import { Question } from "@models/QuestionModel";
+import { QuestionModel } from "@models/QuestionModel";
 import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "@store/store";
 
@@ -13,7 +13,7 @@ type UserAnswers = {
 };
 
 type InitState = {
-  questions: Question[];
+  questions: QuestionModel[];
   userAnswers: UserAnswers;
 };
 
@@ -26,7 +26,7 @@ const quizSlice = createSlice({
   name: "quiz",
   initialState,
   reducers: {
-    saveQuestions: (state, action: PayloadAction<Question[]>) => {
+    saveQuestions: (state, action: PayloadAction<QuestionModel[]>) => {
       state.questions = action.payload;
       state.userAnswers = initialState.userAnswers;
     },
