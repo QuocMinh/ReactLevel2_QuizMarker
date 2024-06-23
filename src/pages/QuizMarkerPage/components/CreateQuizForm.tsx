@@ -1,51 +1,73 @@
-import { DIFFICULTY_OPTIONS } from "@constants/variables";
+import { SelectControl, SelectOption } from "@components/SelectControl";
+import { API_URL } from "@constants/url-settings";
+import { DIFFICULTY_OPTIONS, EMPTY_STRING } from "@constants/variables";
 import { Category } from "@models/CategoryModel";
-import { FC, Fragment, memo, useCallback, useState } from "react";
+import { FC, Fragment, memo, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Button, Input } from "reactstrap";
+import { Button } from "reactstrap";
+import { FormField } from "../models";
 
 export const CreateQuizForm: FC = memo(() => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoryOptions, setCategoryOptions] = useState<SelectOption[]>([]);
 
   const form = useForm({
-    defaultValues: {},
+    defaultValues: {
+      [FormField.CategorySelect]: EMPTY_STRING,
+      [FormField.DifficultySelect]: EMPTY_STRING,
+    },
   });
 
-  const getCategories = useCallback(() => {
-    setCategories([]);
+  const { getValues } = form;
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const respData = await fetch(API_URL.GET_CATEGORIES)
+        .then((response) => response.json())
+        .then((data) => data.trivia_categories as Category[])
+        .catch((error) => {
+          console.log("@getCategories ~ error", error);
+          return null;
+        });
+
+      if (!respData) {
+        return;
+      }
+
+      setCategoryOptions(
+        respData.map((data) => ({ value: data.id, label: data.name }))
+      );
+    };
+
+    getCategories();
   }, []);
+
+  const handleCreate = useCallback(() => {
+    const formValues = getValues();
+    console.log("@handleCreate ~ formValues", formValues);
+    // TODO: Handle create quiz here
+  }, [getValues]);
 
   return (
     <Fragment>
       <FormProvider {...form}>
-        <h3 className="text-center mt-4">QUIZ MARKER</h3>
+        <h3 className="text-center">QUIZ MARKER</h3>
 
         <div className="input-group mt-4">
-          <Input id="categorySelect" name="categorySelect" type="select">
-            <option value="" selected disabled>
-              Select a category
-            </option>
+          <SelectControl
+            id={FormField.CategorySelect}
+            name={FormField.CategorySelect}
+            options={categoryOptions}
+            placeholder="Select a category"
+          />
 
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </Input>
+          <SelectControl
+            id={FormField.DifficultySelect}
+            name={FormField.DifficultySelect}
+            options={DIFFICULTY_OPTIONS}
+            placeholder="Select difficulty"
+          />
 
-          <Input id="difficultySelect" name="difficultySelect" type="select">
-            <option value="" selected disabled>
-              Select difficulty
-            </option>
-
-            {DIFFICULTY_OPTIONS.map((difficulty) => (
-              <option key={difficulty.value} value={difficulty.value}>
-                {difficulty.label}
-              </option>
-            ))}
-          </Input>
-
-          <Button color="secondary" outline>
+          <Button color="secondary" outline onClick={handleCreate}>
             Create
           </Button>
         </div>

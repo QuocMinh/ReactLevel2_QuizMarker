@@ -1,3 +1,5 @@
+export const EMPTY_STRING = "";
+
 export const DIFFICULTY_OPTIONS = [
   {
     label: "Easy",
