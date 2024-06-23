@@ -1,7 +1,9 @@
+import { PageHeader } from "@components/PageHeader";
 import { SelectControl, SelectOption } from "@components/SelectControl";
 import { API_URL } from "@constants/url-settings";
 import { DIFFICULTY_OPTIONS, EMPTY_STRING } from "@constants/variables";
 import { Category } from "@models/CategoryModel";
+import { loadingScreen } from "@utils/redux.utils";
 import { FC, Fragment, memo, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "reactstrap";
@@ -21,6 +23,7 @@ export const CreateQuizForm: FC = memo(() => {
 
   useEffect(() => {
     const getCategories = async () => {
+      loadingScreen.show();
       const respData = await fetch(API_URL.GET_CATEGORIES)
         .then((response) => response.json())
         .then((data) => data.trivia_categories as Category[])
@@ -28,6 +31,7 @@ export const CreateQuizForm: FC = memo(() => {
           console.log("@getCategories ~ error", error);
           return null;
         });
+      loadingScreen.hide();
 
       if (!respData) {
         return;
@@ -49,9 +53,9 @@ export const CreateQuizForm: FC = memo(() => {
 
   return (
     <Fragment>
-      <FormProvider {...form}>
-        <h3 className="text-center">QUIZ MARKER</h3>
+      <PageHeader title="QUIZ MARKER" />
 
+      <FormProvider {...form}>
         <div className="input-group mt-4">
           <SelectControl
             id={FormField.CategorySelect}

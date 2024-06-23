@@ -12,6 +12,8 @@ export default defineConfig({
       { find: "@constants", replacement: resolve(__dirname, "src/constants") },
       { find: "@models", replacement: resolve(__dirname, "src/models") },
       { find: "@partials", replacement: resolve(__dirname, "src/partials") },
+      { find: "@store", replacement: resolve(__dirname, "src/store") },
+      { find: "@utils", replacement: resolve(__dirname, "src/utils") },
     ],
   },
 });

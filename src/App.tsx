@@ -1,13 +1,18 @@
+import { store } from "@store/store";
+import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import { Container } from "reactstrap";
-import "./App.css";
+import { LoadingScreen } from "./components";
 import { router } from "./router";
 
 function App() {
   return (
-    <Container className="App">
-      <RouterProvider router={router} />
-    </Container>
+    <Provider store={store}>
+      <LoadingScreen />
+      <Container className="App">
+        <RouterProvider router={router} />
+      </Container>
+    </Provider>
   );
 }
 

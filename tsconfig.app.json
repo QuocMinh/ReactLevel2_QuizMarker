@@ -30,7 +30,9 @@
       "@components/*": ["./components/*"],
       "@constants/*": ["./constants/*"],
       "@models/*": ["./models/*"],
-      "@partials/*": ["./partials/*"]
+      "@partials/*": ["./partials/*"],
+      "@store/*": ["./store/*"],
+      "@utils/*": ["./utils/*"]
     }
   },
   "include": ["src"]
