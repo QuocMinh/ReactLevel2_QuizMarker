@@ -1,8 +1,12 @@
 import { fetchCategories } from "@api/fetchCategories";
 import { fetchQuestions } from "@api/fetchQuestions";
-import { PageHeader } from "@components/PageHeader";
 import { SelectControl, SelectOption } from "@components/SelectControl";
-import { DIFFICULTY_OPTIONS, EMPTY_STRING, ZERO } from "@constants/variables";
+import {
+  ColorTypes,
+  DIFFICULTY_OPTIONS,
+  EMPTY_STRING,
+  ZERO,
+} from "@constants/variables";
 import { saveQuestions } from "@store/slices/quizSlice";
 import { loadingScreen } from "@utils/redux.utils";
 import { FC, Fragment, memo, useCallback, useEffect, useState } from "react";
@@ -61,8 +65,6 @@ export const CreateQuizForm: FC = memo(() => {
 
   return (
     <Fragment>
-      <PageHeader title="QUIZ MARKER" />
-
       <FormProvider {...form}>
         <div className="input-group mt-4">
           <SelectControl
@@ -79,7 +81,7 @@ export const CreateQuizForm: FC = memo(() => {
             placeholder="Select difficulty"
           />
 
-          <Button color="secondary" outline onClick={handleCreate}>
+          <Button color={ColorTypes.Secondary} outline onClick={handleCreate}>
             Create
           </Button>
         </div>

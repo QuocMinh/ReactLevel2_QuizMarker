@@ -23,6 +23,10 @@ export const fetchQuestions = async (category: string, difficulty: string) => {
       shuffleQuestions.forEach((question, index) => {
         question.id = index + ONE;
         question.user_answer = EMPTY_STRING;
+        question.shuffled_answers = shuffle([
+          question.correct_answer,
+          ...question.incorrect_answers,
+        ]);
       });
       return shuffleQuestions as Question[];
     })

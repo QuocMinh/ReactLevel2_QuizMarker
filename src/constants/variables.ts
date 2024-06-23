@@ -5,6 +5,8 @@ export const ZERO = 0;
 export const ONE = 1;
 export const TWO = 2;
 export const THREE = 3;
+export const FOUR = 4;
+export const FIVE = 5;
 
 export const DIFFICULTY_OPTIONS = [
   {
@@ -20,3 +22,11 @@ export const DIFFICULTY_OPTIONS = [
     value: "hard",
   },
 ];
+
+export enum ColorTypes {
+  Primary = "primary",
+  Warning = "warning",
+  Success = "success",
+  Danger = "danger",
+  Secondary = "secondary",
+}
